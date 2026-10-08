@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Star, TrendingUp, MessageSquare, Plus, Send, ExternalLink, QrCode, Copy, Download, Check, Settings as SettingsIcon, Sparkles, ArrowUpRight, Activity } from 'lucide-react';
+import { Users, Star, TrendingUp, MessageSquare, Plus, Send, ExternalLink, QrCode, Copy, Download, Check, Settings as SettingsIcon, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';

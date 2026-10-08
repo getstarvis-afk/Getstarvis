@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowRight, CalendarDays, CircleHelp, RefreshCw, ShieldCheck } from "lucide-react";
+import { ArrowRight, CircleHelp, RefreshCw, ShieldCheck } from "lucide-react";
 import { getSportsData } from "../../lib/sports/api.js";
-import { matchStatusLabel, scoreLabel } from "../../lib/sports/types.js";
+import { matchStatusLabel } from "../../lib/sports/types.js";
 
 const REFRESH_FALLBACK_MS = 30_000;
 const sportLabels = { football: "Football", basketball: "Basketball", rugby: "Rugby" };
 const displayTime = (date) => date ? new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(date)) : null;
 
 function useSportsResource(path, { poll = false, params = {} } = {}) {
-  const [payload, setPayload] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [resource, setResource] = useState(null);
   const [refreshToken, setRefreshToken] = useState(0);
   const paramsKey = JSON.stringify(params);
+  const requestKey = `${path}:${paramsKey}:${refreshToken}`;
+  const isCurrentResource = resource?.key === requestKey;
+  const payload = isCurrentResource ? resource.payload : null;
+  const error = isCurrentResource ? resource.error : null;
+  const loading = !isCurrentResource;
 
   useEffect(() => {
     let active = true;
@@ -23,21 +26,17 @@ function useSportsResource(path, { poll = false, params = {} } = {}) {
       try {
         const result = await getSportsData(path, { params: JSON.parse(paramsKey), signal: controller.signal });
         if (!active) return;
-        setPayload(result);
-        setError(null);
+        setResource({ key: requestKey, payload: result, error: null });
         if (poll) timer = window.setTimeout(load, Math.max(15_000, Number(result.meta?.refreshIntervalMs) || REFRESH_FALLBACK_MS));
       } catch (requestError) {
         if (!active || requestError.name === "AbortError") return;
-        setError(requestError);
+        setResource({ key: requestKey, payload: null, error: requestError });
         if (poll) timer = window.setTimeout(load, REFRESH_FALLBACK_MS);
-      } finally {
-        if (active) setLoading(false);
       }
     };
-    setLoading(true);
     load();
     return () => { active = false; controller.abort(); window.clearTimeout(timer); };
-  }, [path, paramsKey, poll, refreshToken]);
+  }, [path, paramsKey, poll, refreshToken, requestKey]);
 
   return { payload, error, loading, refresh: () => setRefreshToken((value) => value + 1) };
 }

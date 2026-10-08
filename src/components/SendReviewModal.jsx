@@ -4,6 +4,15 @@ import { DEFAULT_REVIEW_SMS_TEMPLATE, renderReviewTemplate } from '../services/r
 
 const VARIABLES = ['{{firstName}}', '{{fullName}}', '{{businessName}}', '{{reviewLink}}'];
 
+function InfoCell({ label, value, tone = 'text-slate-800', icon = null }) {
+  return (
+    <div className="rounded-xl bg-slate-50 border border-slate-100 px-3 py-2">
+      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
+      <p className={`flex items-center gap-1 font-semibold ${tone}`}>{icon}{value}</p>
+    </div>
+  );
+}
+
 // Approximate GSM-7 alphabet (default + common extended chars). Used only for a
 // rough SMS segment estimate shown in the UI — not for validation.
 const GSM7 =
@@ -79,13 +88,6 @@ export default function SendReviewModal({
     }
     onConfirm(finalMessage, template.trim());
   };
-
-  const InfoCell = ({ label, value, tone = 'text-slate-800', icon = null }) => (
-    <div className="rounded-xl bg-slate-50 border border-slate-100 px-3 py-2">
-      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
-      <p className={`flex items-center gap-1 font-semibold ${tone}`}>{icon}{value}</p>
-    </div>
-  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#081120]/70 backdrop-blur-sm">

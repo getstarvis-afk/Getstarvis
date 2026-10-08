@@ -36,19 +36,6 @@ function StatCard({ icon: Icon, label, value, sub, color }) {
   );
 }
 
-function EmptyChart() {
-  return (
-    <div className="flex h-48 items-end justify-between gap-2 rounded-2xl bg-slate-50 p-4">
-      {Array.from({ length: 7 }).map((_, index) => (
-        <div key={index} className="flex flex-1 flex-col items-center gap-2">
-          <div className="w-full rounded-t-lg bg-slate-200/70" style={{ height: `${22 + index * 5}px` }} />
-          <span className="text-xs text-slate-400">{['M', 'T', 'W', 'T', 'F', 'S', 'S'][index]}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function Analytics() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);

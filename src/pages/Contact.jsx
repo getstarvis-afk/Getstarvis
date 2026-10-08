@@ -15,6 +15,18 @@ const SUBJECTS = [
   'Other',
 ];
 
+function Field({ label, required, error, children }) {
+  return (
+    <div>
+      <label className="mb-1 block text-sm font-semibold text-slate-300">
+        {label}{required && <span className="ml-0.5 text-rose-400">*</span>}
+      </label>
+      {children}
+      {error && <p className="mt-1 text-xs text-rose-400">{error}</p>}
+    </div>
+  );
+}
+
 export default function Contact() {
   const [form, setForm] = useState({ name: '', company: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState({});
@@ -64,16 +76,6 @@ export default function Contact() {
       setSubmitting(false);
     }
   };
-
-  const Field = ({ label, required, error, children }) => (
-    <div>
-      <label className="mb-1 block text-sm font-semibold text-slate-300">
-        {label}{required && <span className="ml-0.5 text-rose-400">*</span>}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-rose-400">{error}</p>}
-    </div>
-  );
 
   const inputCls = (hasError) =>
     `w-full rounded-xl border bg-white/10 px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition focus:ring-1 ${

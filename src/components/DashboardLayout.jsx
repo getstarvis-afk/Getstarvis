@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import Sidebar from './Sidebar';
@@ -21,22 +21,10 @@ const TITLES = {
 // DashboardDataProvider so it can read + write settings via context.
 function TourWrapper({ children }) {
   const { settings, loadingSettings, saveSettings } = useDashboardData();
-  const [showTour, setShowTour] = useState(false);
-
-  useEffect(() => {
-    if (loadingSettings) return;
-    // Show for users who have set a business name (existing) or completed
-    // onboarding (new), but haven't seen the tour yet.
-    const readyForTour = settings.onboardingComplete === true || !!settings.businessName;
-    if (readyForTour && settings.tourCompleted !== true) {
-      setShowTour(true);
-    } else {
-      setShowTour(false);
-    }
-  }, [loadingSettings, settings.onboardingComplete, settings.businessName, settings.tourCompleted]);
+  const readyForTour = settings.onboardingComplete === true || !!settings.businessName;
+  const showTour = !loadingSettings && readyForTour && settings.tourCompleted !== true;
 
   const handleDone = async () => {
-    setShowTour(false);
     saveSettings({ tourCompleted: true }).catch(() => {});
   };
 

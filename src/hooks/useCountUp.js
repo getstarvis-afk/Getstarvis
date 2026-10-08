@@ -19,7 +19,10 @@ export function useCountUp(target, { duration = 1500, play = true } = {}) {
 
     const reduce = typeof window !== 'undefined'
       && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { setValue(target); return; }
+    if (reduce) {
+      frame.current = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(frame.current);
+    }
 
     const start = performance.now();
     const tick = (now) => {

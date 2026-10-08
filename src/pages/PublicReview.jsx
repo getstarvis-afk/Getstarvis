@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -10,7 +10,17 @@ const RATING_LABELS = ['', 'Poor', 'Fair', 'Okay', 'Great', 'Excellent!'];
 export default function PublicReview() {
   const { requestId } = useParams();
   // phase: loading | invalid | form | google | private | done
-  const [phase, setPhase] = useState('loading');
+  const [phaseState, setPhaseState] = useState(() => ({
+    requestId,
+    phase: requestId ? 'loading' : 'invalid',
+  }));
+  const phase = phaseState.requestId === requestId
+    ? phaseState.phase
+    : requestId ? 'loading' : 'invalid';
+  const setPhase = useCallback(
+    nextPhase => setPhaseState({ requestId, phase: nextPhase }),
+    [requestId],
+  );
   const [req, setReq] = useState(null);
   const [rating, setRating] = useState(0);
   const [hovered, setHovered] = useState(0);
@@ -19,7 +29,7 @@ export default function PublicReview() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!requestId) { setPhase('invalid'); return undefined; }
+    if (!requestId) return undefined;
     let active = true;
     (async () => {
       try {
@@ -40,7 +50,7 @@ export default function PublicReview() {
       }
     })();
     return () => { active = false; };
-  }, [requestId]);
+  }, [requestId, setPhase]);
 
   const handleSubmit = async () => {
     if (rating < 1) { setError('Please select a star rating.'); return; }

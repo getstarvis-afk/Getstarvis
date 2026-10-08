@@ -14,12 +14,10 @@ export default function SmsQuotaCard({ billing, smsUsage, className = '' }) {
       ? 'bg-gradient-to-r from-amber-400 to-orange-500'
       : 'bg-gradient-to-r from-sky-500 via-blue-500 to-violet-500';
 
-  let resetLabel = 'next month';
-  try {
-    resetLabel = new Date(usage.resetAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  } catch {
-    resetLabel = 'next month';
-  }
+  const resetDate = new Date(usage.resetAt);
+  const resetLabel = Number.isNaN(resetDate.getTime())
+    ? 'next month'
+    : resetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
   return (
     <div className={`rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_6px_16px_-8px_rgba(15,23,42,0.14)] ${className}`}>
