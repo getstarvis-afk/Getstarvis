@@ -20,10 +20,10 @@ export function ArticleCard({ article, variant = "standard" }) {
       <span className="image-arrow"><ArrowUpRight size={19} /></span>
     </Link>
     <div className="article-copy">
-      <div className="article-meta"><Link to={article.categoryPath}>{article.category}</Link><span>·</span><span>{article.readTime}</span><DemoFlag /></div>
+      <div className="article-meta"><Link to={article.categoryPath}>{article.category}</Link><span>·</span><span>{article.readTime}</span>{article.isDemo === false ? <span className="published-label">Publié GETSTARVIS</span> : <DemoFlag />}</div>
       <h3><Link to={`/article/${article.slug}`}>{article.title}</Link></h3>
       {variant !== "compact" && <p>{article.excerpt}</p>}
-      <div className="article-byline"><span><Clock3 size={13} /> {article.time}</span><span className="verified-note"><BadgeCheck size={14} /> Démo éditoriale</span></div>
+      <div className="article-byline"><span><Clock3 size={13} /> {article.time}</span><span className="verified-note"><BadgeCheck size={14} /> {article.isDemo === false ? "Article vérifié" : "Démo éditoriale"}</span></div>
     </div>
   </article>;
 }
@@ -31,7 +31,7 @@ export function ArticleCard({ article, variant = "standard" }) {
 export function CompactArticle({ article, index }) {
   return <article className="compact-article">
     <span className="compact-number">{String(index + 1).padStart(2, "0")}</span>
-    <div className="compact-copy"><Link className="compact-category" to={article.categoryPath}>{article.category}</Link><h3><Link to={`/article/${article.slug}`}>{article.title}</Link></h3><span>{article.time} <DemoFlag /></span></div>
+    <div className="compact-copy"><Link className="compact-category" to={article.categoryPath}>{article.category}</Link><h3><Link to={`/article/${article.slug}`}>{article.title}</Link></h3><span>{article.time} {article.isDemo === false ? <span className="published-label">Publié GETSTARVIS</span> : <DemoFlag />}</span></div>
     <ArrowUpRight className="compact-arrow" size={17} />
   </article>;
 }

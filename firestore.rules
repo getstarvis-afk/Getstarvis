@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // GETSTARVIS uses Firebase Authentication for reader accounts. No media page
+    // accesses Firestore directly; the sports cache uses Firebase Admin server-side.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

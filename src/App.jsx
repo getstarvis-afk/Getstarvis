@@ -2,6 +2,7 @@
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { SiteLayout } from "./components/media/SiteLayout.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { NewsroomPage } from "./pages/media/NewsroomPage.jsx";
 import { AccountPage, AuthPage } from "./pages/media/AuthPages.jsx";
 import { HomePage, CategoryPage, ArticlePage, SearchPage, InfoPage, NotFoundPage } from "./pages/media/PortalPages.jsx";
 
@@ -22,6 +23,7 @@ const pageTitles = {
   "/inscription": "Créer un compte — GETSTARVIS",
   "/mot-de-passe-oublie": "Réinitialiser le mot de passe — GETSTARVIS",
   "/compte": "Mon compte — GETSTARVIS",
+  "/newsroom": "Newsroom — GETSTARVIS",
 };
 
 function PageMeta() {
@@ -55,6 +57,7 @@ function SiteRoutes() {
           <Route path="/inscription" element={<AuthPage key="signup" />} />
           <Route path="/mot-de-passe-oublie" element={<AuthPage key="reset" />} />
           <Route path="/compte" element={<AccountPage />} />
+          <Route path="/newsroom" element={<NewsroomPage />} />
           <Route path="/starverify" element={<InfoPage title="STARVERIFY" kicker="FIABILITÉ — EXIGENCE — TRANSPARENCE" description="Pas de confirmation, pas de fait. Découvrez le cadre de vérification de GETSTARVIS." />} />
           <Route path="/charte-editoriale" element={<InfoPage title="Charte éditoriale" kicker="NOS PRINCIPES" description="Les principes qui guident la couverture éditoriale de GETSTARVIS." />} />
           <Route path="/a-propos" element={<InfoPage title="À propos de GETSTARVIS" />} />

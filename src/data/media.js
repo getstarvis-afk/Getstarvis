@@ -27,19 +27,19 @@ export const categoryData = {
     title: "Football",
     kicker: "Toute l’actualité du football",
     description: "Les matchs, les clubs et les histoires qui font vivre le football.",
-    subcategories: ["Actualités", "Matchs", "Résultats", "Transferts", "Compétitions"],
+    subcategories: ["Actualités", "Clubs", "Transferts", "Compétitions", "Portraits"],
   },
   "sport/basketball": {
     title: "Basketball",
     kicker: "Le jeu prend de la hauteur",
     description: "L’actualité, les résultats et les talents du basketball.",
-    subcategories: ["Actualités", "Matchs", "Résultats", "Compétitions"],
+    subcategories: ["Actualités", "Clubs", "Compétitions", "Portraits"],
   },
   "sport/rugby": {
     title: "Rugby",
     kicker: "Le jeu, l’engagement, les équipes",
     description: "Les actualités et les histoires du rugby.",
-    subcategories: ["Actualités", "Matchs", "Résultats", "Compétitions"],
+    subcategories: ["Actualités", "Clubs", "Compétitions", "Portraits"],
   },
   "music/next": {
     title: "GETSTARVIS NEXT",
